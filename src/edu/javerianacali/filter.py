@@ -6,7 +6,7 @@ ruta1 = "/home/maucasco/Documents/maestria/proyecto_grado/assets/Heilipus72.jpg"
 im = cv2.imread(ruta1)
 
 # Visualizar la imagen
-cv2.imshow("Imagen", im)
+cv2.imshow("Imagen2", im)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
