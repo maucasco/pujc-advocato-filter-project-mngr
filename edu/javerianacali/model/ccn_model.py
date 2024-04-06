@@ -5,40 +5,40 @@ from edu.javerianacali.create_dataset import CreateDataSet
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 import matplotlib.pyplot as plt
-
+from keras.layers import Dropout
+from keras.optimizers import Adam
 from keras.models import Model
 import matplotlib.pyplot as plt
+
+from edu.javerianacali.process_images import ProcessImages
 
 class ConvulationalNeuralNetwork:
     def __init__    (self):
         pass    
     def prepare_dataset(self,directorio):
-
-
-
-        # Crea un generador de datos de imagen con normalización
         datagen = ImageDataGenerator(rescale=1./255)
-        print(directorio)
+        print(directorio
+        +'/tensor')
         # Carga las imágenes desde el directorio
         # Asegúrate de que dentro de este directorio, las imágenes estén organizadas en subdirectorios según su etiqueta/clase
         generator = datagen.flow_from_directory(
-        directorio,
+        directorio+'/train',
         target_size=(100, 130),  # Asegúrate de que estas dimensiones coincidan con el preprocesamiento que hiciste
-        batch_size=48,
+        batch_size=180,
         class_mode='categorical' ) # Usa 'binary' si solo tienes dos clases
 
         return generator
 
-    def train_model(self,generator, num_epocas, tamano_lote, canales=3):  
+    def train_model(self,generator,epochs,batch_size,steps_per_epoch):  
         modelo = Sequential([
-            Conv2D(32, (5,5), activation='relu', input_shape=(100, 130, 3)),
+            Conv2D(32, (2,2), activation='relu', input_shape=(100, 130, 3)),
             MaxPooling2D(pool_size=(2,2)),
-            Conv2D(64, (5,5), activation='relu'),
+            Conv2D(64, (2,2), activation='relu'),
             MaxPooling2D(pool_size=(2,2)),
             Flatten(),
             Dense(128, activation='relu'),
             Dropout(0.5),  # Capa de abandono para regularización
-            Dense(5, activation='softmax')
+            Dense(2, activation='softmax')
         ])
         modelo.compile(optimizer=Adam(learning_rate=0.001),  # Ajustar la tasa de aprendizaje
             loss='categorical_crossentropy',  
@@ -64,11 +64,10 @@ class ConvulationalNeuralNetwork:
         plt.legend(['Entrenamiento'], loc='upper left')
         plt.show()
 
-
-        #necesito generar un metodo que me permita predecir una imagen
+     
     def predict(self, image):
         # Preprocess the image
-        preprocessed_image = preprocess_image(image)
+        preprocessed_image = ProcessImages().procesar(image)
         
         # Make predictions using the model
         predictions = self.model.predict(preprocessed_image)
@@ -81,6 +80,7 @@ class ConvulationalNeuralNetwork:
     
 
     def save_model(self):
+        
 
         pass
 
@@ -111,4 +111,3 @@ class ConvulationalNeuralNetwork:
         plt.show()
     def show_model(self):
         pass
-# Path: edu/javerianacali/model/logistic_regression_model.py

@@ -4,7 +4,7 @@ import numpy as np
 import os
 import random
 
-# Directorio donde se encuentran las imágenes seleccionadas
+
 class DataAugmentation:
     # Función para crear un generador de aumentación de datos con parámetros aleatorios
     def random_datagen(self):

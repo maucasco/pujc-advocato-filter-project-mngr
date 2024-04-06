@@ -6,27 +6,32 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 from edu.javerianacali.create_dataset import CreateDataSet
-
+from tabulate import tabulate
 
 
 class LogisticRegressionModel:
     def __init__(self):
         pass
 
-    def prepare_dataset(self,directorio):
+    def prepare_dataset(self, directorio):
+        data, labels, dimensiones = CreateDataSet().create_dataset(directorio=directorio)
 
+        # Aplanar cada elemento en data para tener una longitud consistente
+        flattened_data = [d.flatten() for d in data]
 
-        data , labels, dimensiones =CreateDataSet().create_dataset(directorio=directorio)
+        # Convertir la lista aplanada en un array de NumPy
+        X = np.array(flattened_data)
 
-        X = np.array(data)
         dims = np.array(dimensiones)
         df_data = pd.DataFrame(X)
 
         # Agregar columnas para dimensiones
         df_data['height'] = dims[:, 0]
         df_data['width'] = dims[:, 1]
+
         # Guardar el DataFrame como CSV (opcional)
         df_data.to_csv(os.path.join(directorio, 'dataset_imagenes.csv'), index=False)
+
 
     def train_model(self,data, labels):
         # Suponiendo que 'data' es tu matriz de imágenes aplanadas
@@ -50,9 +55,30 @@ class LogisticRegressionModel:
         # Evaluar el rendimiento del modelo
         accuracy = accuracy_score(y_test, y_pred)
         print(f"Accuracy: {accuracy:.2f}")
+        
+        # Genera el informe de clasificación y la matriz de confusión
+        report = classification_report(y_test, y_pred, output_dict=True)
+        report_df = pd.DataFrame(report).transpose()
+        report_df.to_csv('classification_report.csv', index=True)
 
+        # Convierte el informe de clasificación en una estructura que tabulate pueda manejar
+        report_table = []
+
+        # Agrega los datos al report_table
+        for label, metrics in report.items():
+            if isinstance(metrics, dict):  # Asegura que metrics sea un diccionario
+                row = [label] + [metrics.get(metric, '') for metric in ['precision', 'recall', 'f1-score', 'support']]
+                report_table.append(row)
+
+        # Agrega el promedio/total al final
+        average_row = ['average/total'] + [report.get(metric, '') for metric in ['precision', 'recall', 'f1-score', 'support']]
+        report_table.append(average_row)
+
+        # Usa tabulate para formatear el informe de clasificación
         print("Classification Report:")
-        print(classification_report(y_test, y_pred))
+        print(tabulate(report_table, headers=['label', 'precision', 'recall', 'f1-score', 'support'], tablefmt='fancy_grid', numalign='right'))
 
-        print("Confusion Matrix:")
-        print(confusion_matrix(y_test, y_pred))
+        # Para la matriz de confusión
+        matrix = confusion_matrix(y_test, y_pred)
+        print("\nConfusion Matrix:")
+        print(tabulate(matrix, tablefmt='fancy_grid', numalign='right'))

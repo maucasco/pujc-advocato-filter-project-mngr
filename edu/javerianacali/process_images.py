@@ -50,18 +50,13 @@ class ProcessImages:
         return filtrada
 
     def segmentar_imagen(self,imagen_sin_texto):
-    
-    
         
-        # Eliminar sombras
+    # Eliminar sombras
         imagen_sin_texto= self.eliminar_sombras(imagen_sin_texto)
         gray = cv2.cvtColor(imagen_sin_texto, cv2.COLOR_BGR2GRAY)
 
     # Aplicar la corrección gamma para eliminar las sombras
-        gamma_corrected = np.array(255*(gray / 255) ** 0.2 , dtype='uint8')
-
-
-        
+        gamma_corrected = np.array(255*(gray / 255) ** 0.2 , dtype='uint8')     
         # Usar thresholding de Otsu
         _, imagen_segmentada = cv2.threshold(gamma_corrected, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
         
@@ -98,9 +93,7 @@ class ProcessImages:
         resized_img = cv2.resize(image, (desired_width, desired_height))
         return resized_img
 
-
-    def procesar_imagen(self,ruta_imagen,nombre,directorio):
-        imagen = cv2.imread(ruta_imagen)[100:, :]
+    def procesar(self,imagen):
 
         imagen_sin_texto=[]
         print("Type:",type(imagen))
@@ -123,6 +116,14 @@ class ProcessImages:
             
         aguacate_solo = self.segmentar_imagen(imagen_sin_texto)
         redimenciada = self.redimensionar(aguacate_solo)
+    
+        return imagen_sin_texto,aguacate_solo, redimenciada
+    
+
+    def procesar_imagen(self,ruta_imagen,nombre,directorio):
+        imagen = cv2.imread(ruta_imagen)[100:, :]
+
+        imagen_sin_texto,aguacate_solo,redimenciada = self.procesar(imagen)
         nueva_imga=directorio+'/process/fil_'+nombre
         print(nueva_imga)
         cv2.imwrite(nueva_imga, redimenciada)
