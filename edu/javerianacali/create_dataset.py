@@ -86,7 +86,6 @@ class CreateDataSet:
                     print(nueva_imga)
                     cv2.imwrite(nueva_imga, img)
                 if "Heilipus" in archivo or "heilipus" in archivo:
-                    # Copiar imagen a directorio de entrenamiento
                     nueva_imga = directorio + destino + '/Heilipus/' + archivo
                     print(nueva_imga)
                     cv2.imwrite(nueva_imga, img)

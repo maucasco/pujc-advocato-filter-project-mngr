@@ -5,7 +5,8 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.model_selection import train_test_split
 from tabulate import tabulate
 import pandas as pd
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 from edu.javerianacali.process_images import ProcessImages
 
 class SupportVectorMachineModel:
@@ -41,6 +42,7 @@ class SupportVectorMachineModel:
             report = classification_report(y_test, y_pred, output_dict=True)
             report_df = pd.DataFrame(report).transpose()
             report_df.to_csv('classification_report.csv', index=True)
+            
 
             print(report_df)
             # Agrega los datos al report_table
@@ -58,9 +60,13 @@ class SupportVectorMachineModel:
             print(tabulate(report_table, headers=['label', 'precision', 'recall', 'f1-score', 'support'], tablefmt='fancy_grid', numalign='right'))
 
             # Para la matriz de confusión
-            matrix = confusion_matrix(y_test, y_pred)
-            print("\nConfusion Matrix:")
-            print(tabulate(matrix, tablefmt='fancy_grid', numalign='right'))
+            cm = confusion_matrix(y_test, y_pred)
+            plt.figure(figsize=(10,7))
+            sns.heatmap(cm, annot=True, fmt="d", cmap='Blues')
+            plt.xlabel('Predicción')
+            plt.ylabel('Verdaderos')
+            plt.title('Confusion Matrix')
+            plt.show()
             
 
             return self.model

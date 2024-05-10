@@ -225,3 +225,4 @@ cython_debug/
 *.max
 version1proyecto.zip
 proyectogrado.zip
+modelo/modelo_cnn.h5

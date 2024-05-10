@@ -81,19 +81,19 @@ class ProcessImages:
         return aguacate_resaltado
 
     # Carga y preprocesamiento
-    def redimensionar(self, image):
+    def redimensionar(self, image,desired_width = 100,desired_height=100 ):
         original_height, original_width = image.shape[:2]
-        desired_width = 100
+        
 
         # Calcula el factor de escala y el alto deseado
-        scale_factor = desired_width / original_width
-        desired_height = int(original_height * scale_factor)
+        #scale_factor = desired_width / original_width
+        #desired_height = int(original_height * scale_factor)
 
         # Redimensiona la imagen proporcionalmente
         resized_img = cv2.resize(image, (desired_width, desired_height))
         return resized_img
 
-    def procesar(self,imagen):
+    def procesar(self,imagen,desired_width,desired_height):
 
         imagen_sin_texto=[]
         print("Type:",type(imagen))
@@ -103,7 +103,7 @@ class ProcessImages:
             # print("Pixel Values:\n", img)
         print("Dimension:", imagen.ndim)
       
-       
+        imagen_sin_texto = imagen
            
         if imagen.size>1000000 and imagen.size<=9999999:
             imagen_sin_texto = self.eliminar_texto(imagen, 0, 0, 3000, 250)
@@ -111,19 +111,19 @@ class ProcessImages:
             imagen_sin_texto = self.eliminar_texto(imagen, 0, 0, 3000, 1000)
         elif imagen.size>=30000000 and imagen.size<=35000000:
             imagen_sin_texto = imagen
-        else:
+        elif imagen.size>=35000001:
             imagen_sin_texto = self.eliminar_texto(imagen, 0, 0, 3000, 500)    
             
         aguacate_solo = self.segmentar_imagen(imagen_sin_texto)
-        redimenciada = self.redimensionar(aguacate_solo)
+        redimenciada = self.redimensionar(aguacate_solo,desired_width,desired_height)
     
         return imagen_sin_texto,aguacate_solo, redimenciada
     
 
-    def procesar_imagen(self,ruta_imagen,nombre,directorio):
+    def procesar_imagen(self,ruta_imagen,nombre,directorio,desired_width,desired_height):
         imagen = cv2.imread(ruta_imagen)[100:, :]
 
-        imagen_sin_texto,aguacate_solo,redimenciada = self.procesar(imagen)
+        imagen_sin_texto,aguacate_solo,redimenciada = self.procesar(imagen,desired_width,desired_height)
         nueva_imga=directorio+'/process/fil_'+nombre
         print(nueva_imga)
         cv2.imwrite(nueva_imga, redimenciada)
