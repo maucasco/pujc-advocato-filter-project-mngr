@@ -18,7 +18,7 @@ class CreateDataSet:
         labels = []
         dimensiones = []
         for archivo in archivos:
-            if archivo.endswith(".jpg") or   archivo.endswith(".JPG") or archivo.endswith(".jpeg"):
+            if archivo.endswith((".jpg", ".JPG", ".jpeg", ".png")):
                 ruta_imagen = os.path.join(directorio+'/process/', archivo)
                 print(ruta_imagen)
                 img = cv2.imread(ruta_imagen)
@@ -62,9 +62,9 @@ class CreateDataSet:
 
         # Limpiar directorio de entrenamiento
         for archivo in archivos:
-            if archivo.endswith(".jpg") or archivo.endswith(".JPG") or archivo.endswith(".jpeg"):
-                ruta_imagen = os.path.join(directorio, archivo)
-                os.remove(ruta_imagen)
+           if archivo.endswith((".jpg", ".JPG", ".jpeg", ".png")):
+               ruta_imagen = os.path.join(directorio, archivo)
+               os.remove(ruta_imagen)
 
 
     def split_images(self,archivos):
@@ -76,18 +76,18 @@ class CreateDataSet:
 
     def copy_images(self,imagenes, directorio, destino):
         for archivo in imagenes:
-            if archivo.endswith(".jpg") or archivo.endswith(".JPG") or archivo.endswith(".jpeg"):
+            #simplify this condition
+            if archivo.endswith((".jpg", ".JPG", ".jpeg", ".png")):
                 ruta_imagen = os.path.join(directorio+'/process/', archivo)
                 print(ruta_imagen)
                 img = cv2.imread(ruta_imagen)
-
                 if "sano" in archivo or "Sano" in archivo:
-                    nueva_imga = directorio + destino + '/Sano/' + archivo
-                    print(nueva_imga)
-                    cv2.imwrite(nueva_imga, img)
+                    if "aug" not in archivo:
+                        nueva_imga = directorio + destino + '/Sano/' + archivo
+                        print(nueva_imga)
+                        cv2.imwrite(nueva_imga, img)
                 if "Heilipus" in archivo or "heilipus" in archivo:
                     nueva_imga = directorio + destino + '/Heilipus/' + archivo
                     print(nueva_imga)
                     cv2.imwrite(nueva_imga, img)
            
-     
