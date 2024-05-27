@@ -9,13 +9,12 @@ class DataAugmentation:
     # Función para crear un generador de aumentación de datos con parámetros aleatorios
     def random_datagen(self):
         return ImageDataGenerator(
-            rotation_range=random.randint(0, 30),  # Reducir el rango de rotación
+            rotation_range=random.randint(0, 20),  # Reducir el rango de rotación
             width_shift_range=random.uniform(0.05, 0.15),  # Reducir el rango de cambio de ancho
             height_shift_range=random.uniform(0.05, 0.15),  # Reducir el rango de cambio de altura
             shear_range=random.uniform(0.05, 0.15),  # Reducir el ángulo de cizallamiento
             zoom_range=random.uniform(0.05, 0.15),  # Reducir el rango de zoom
             horizontal_flip=random.choice([True, False]),  # Volteo horizontal aleatorio
-            fill_mode='nearest'  # Relleno de pixeles faltantes
         )
 
 
@@ -38,5 +37,5 @@ class DataAugmentation:
             i = 0
             for batch in datagen.flow(x, batch_size=1, save_to_dir=save_dir, save_prefix=save_prefix, save_format='jpg'):
                 i += 1
-                if i >= 20:  # Generar 10 imágenes aumentadas por archivo
+                if i >= 5:  # Generar 10 imágenes aumentadas por archivo
                     break

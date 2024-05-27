@@ -41,6 +41,26 @@ class CreateDataSet:
                         labels.append(1)
         return data , labels, dimensiones
     
+    def load_images_from_directory(self,directory):
+        images = []
+        labels = []
+        class_names = os.listdir(directory)
+        
+        for class_index, class_name in enumerate(class_names):
+            class_dir = os.path.join(directory, class_name)
+            if os.path.isdir(class_dir):
+                for image_name in os.listdir(class_dir):
+                    image_path = os.path.join(class_dir, image_name)
+                    image = cv2.imread(image_path)
+                    if image is not None:
+                        images.append(image)
+                        labels.append(class_index)
+    
+        return np.array(images), np.array(labels), class_names
+
+
+
+    
     def create_dataset_cnn(self, directorio):
         
       
@@ -82,7 +102,6 @@ class CreateDataSet:
                 print(ruta_imagen)
                 img = cv2.imread(ruta_imagen)
                 if "sano" in archivo or "Sano" in archivo:
-                    if "aug" not in archivo:
                         nueva_imga = directorio + destino + '/Sano/' + archivo
                         print(nueva_imga)
                         cv2.imwrite(nueva_imga, img)

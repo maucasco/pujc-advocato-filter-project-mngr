@@ -6,7 +6,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 from edu.javerianacali.create_dataset import CreateDataSet
-from tabulate import tabulate
+
 
 
 class LogisticRegressionModel:
