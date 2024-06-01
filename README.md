@@ -88,7 +88,9 @@ Alternativamente, puedes instalar las dependencias listadas en requirements.txt 
 bash
 Copiar código
 pip install -r requirements.txt
-Ejecución de Notebooks
+```
+
+## Ejecución de Notebooks de Dependencias
 CNN
 cnn_final.ipynb:
 
