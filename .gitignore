@@ -9,7 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 assets/
-assets (Copy)/
+assets_inicio/
 build/
 develop-eggs/
 dist/
@@ -228,3 +228,9 @@ version1proyecto.zip
 proyectogrado.zip
 modelo/modelo_cnn.h5
 codigo27may23.zip
+*.JPG
+*.txt
+*.xml
+assets_inicio/dataset_imagenes.csv
+*.csv
+*.csv
