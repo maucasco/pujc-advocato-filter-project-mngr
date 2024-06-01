@@ -7,6 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from edu.javerianacali.process_images import ProcessImages
+from tabulate import tabulate
 
 class SupportVectorMachineModel:
 
@@ -50,18 +51,13 @@ class SupportVectorMachineModel:
                     row = [label] + [metrics.get(metric, '') for metric in ['precision', 'recall', 'f1-score', 'support']]
                     report_table.append(row)
 
-            # Agrega el promedio/total al final
-            average_row = ['average/total'] + [report.get(metric, '') for metric in ['precision', 'recall', 'f1-score', 'support']]
-            report_table.append(average_row)
+            # Rest of the code...
 
-            # Usa tabulate para formatear el informe de clasificación
+            # Use tabulate to format the classification report
             print("Classification Report:")
             print(tabulate(report_table, headers=['label', 'precision', 'recall', 'f1-score', 'support'], tablefmt='fancy_grid', numalign='right'))
 
-            # Para la matriz de confusión
-            cm = confusion_matrix(y_test, y_pred)
-            plt.figure(figsize=(10,7))
-            sns.heatmap(cm, annot=True, fmt="d", cmap='Blues')
+            # Rest of the code...
             plt.xlabel('Predicción')
             plt.ylabel('Verdaderos')
             plt.title('Confusion Matrix')

@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 assets/
+assets (Copy)/
 build/
 develop-eggs/
 dist/
@@ -226,3 +227,4 @@ cython_debug/
 version1proyecto.zip
 proyectogrado.zip
 modelo/modelo_cnn.h5
+codigo27may23.zip
